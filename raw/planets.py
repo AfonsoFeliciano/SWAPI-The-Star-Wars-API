@@ -1,26 +1,26 @@
 # Databricks notebook source
-path_films_transient = "/FileStore/tables/swapi_dev/transient/films/"
+path_planets_transient = "/FileStore/tables/swapi_dev/transient/planets/"
 
 # COMMAND ----------
 
-df_films = spark.read.json(path_films_transient)
+df_planets = spark.read.json(path_planets_transient)
 
 # COMMAND ----------
 
-display(df_films)
+display(df_planets)
 
 # COMMAND ----------
 
 #Definindo o diretório para salvar o arquivo parquet
-path_films_raw = '/FileStore/tables/swapi_dev/raw/films.parquet'
+path_planets_raw = '/FileStore/tables/swapi_dev/raw/planets.parquet'
 
 # COMMAND ----------
 
 #Escrevendo o arquivo parquet com compressão snappy e no modo overwrite
-(df_films.write
+(df_planets.write
      .option("compression", "snappy")
      .mode("overwrite")
-     .parquet(path_films_raw)
+     .parquet(path_planets_raw)
 )
 
 # COMMAND ----------
