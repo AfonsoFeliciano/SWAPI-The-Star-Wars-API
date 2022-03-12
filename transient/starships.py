@@ -7,7 +7,7 @@ import time
 # COMMAND ----------
 
 # DBTITLE 1,URL utilizada nada chamada da API
-url = 'https://swapi.dev/api/films/'
+url = 'https://swapi.dev/api/starships/'
 
 # COMMAND ----------
 
@@ -39,7 +39,7 @@ qtd_calls = responseDict['count']
 # COMMAND ----------
 
 #Define o caminho que os arquivos brutos serão salvos
-path = "/FileStore/tables/swapi_dev/transient/films/"
+path = "/FileStore/tables/swapi_dev/transient/starships/"
 
 # COMMAND ----------
 
@@ -67,8 +67,8 @@ while qtd_files <= qtd_calls:
     #Cria uma variavel string com o número n da iteração
     string_iterator = str(i + 1)
     
-    #Concatena a url com o número do films
-    url = "https://swapi.dev/api/films/"
+    #Concatena a url com o número do starships
+    url = "https://swapi.dev/api/starships/"
     url = url + string_iterator
     
     #Realiza um get na API
@@ -88,14 +88,14 @@ while qtd_files <= qtd_calls:
     if response != None and response.status_code == 200:
         
         #Define o caminho que os arquivos brutos serão salvos
-        path = "/FileStore/tables/swapi_dev/transient/films/"
+        path = "/FileStore/tables/swapi_dev/transient/starships/"
         
         #Verifica quantidade de arquivos json no path
         dir = dbutils.fs.ls(path)
         
         #print(json.loads(response.text))
 
-        file = "call_films_" + string_iterator + ".json"
+        file = "call_starships_" + string_iterator + ".json"
 
         print("Gravando o arquivo " +  file)
         dbutils.fs.put(path + file, response.text)
