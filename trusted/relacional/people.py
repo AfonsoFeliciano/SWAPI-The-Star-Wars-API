@@ -1,4 +1,8 @@
 # Databricks notebook source
+from pyspark.sql.functions import reverse, split, col, regexp_replace, explode_outer
+
+# COMMAND ----------
+
 path_people_raw = "/FileStore/tables/swapi_dev/raw/people.parquet"
 
 # COMMAND ----------
@@ -35,8 +39,6 @@ display(people_df)
 
 # COMMAND ----------
 
-from pyspark.sql.functions import *
-
 people_df = (people_df
             .withColumn("species", explode_outer("species"))
 )
@@ -44,9 +46,6 @@ people_df = (people_df
 display(people_df)
 
 # COMMAND ----------
-
-#Extração do número da chamada da API para se tornar o ID do people
-from pyspark.sql.functions import reverse, split, col
 
 people_df = (people_df
                 .withColumn("id_people",reverse(split(reverse(col("url")),"/").getItem(1)))
@@ -72,7 +71,6 @@ display(people_df)
 
 # COMMAND ----------
 
-from pyspark.sql.functions import regexp_replace
 people_df = (
     
             people_df
@@ -116,7 +114,6 @@ people_df = (
                     col("created").cast('timestamp'),
                     col("edited").cast('timestamp')   
                 )
-
 )
 
 # COMMAND ----------
@@ -130,7 +127,7 @@ display(people_df)
 # COMMAND ----------
 
 #Definindo o diretório para salvar o arquivo parquet
-path_people = '/FileStore/tables/swapi_dev/trusted/people.parquet'
+path_people = '/FileStore/tables/swapi_dev/trusted/relacional/people.parquet'
 
 # COMMAND ----------
 

@@ -1,4 +1,8 @@
 # Databricks notebook source
+from pyspark.sql.functions import explode, reverse, split, col, monotonically_increasing_id
+
+# COMMAND ----------
+
 path_people_vehicles_raw = "/FileStore/tables/swapi_dev/raw/people.parquet"
 
 # COMMAND ----------
@@ -7,8 +11,6 @@ people_vehicles_df = spark.read.parquet(path_people_vehicles_raw)
 display(people_vehicles_df)
 
 # COMMAND ----------
-
-from pyspark.sql.functions import *
 
 people_vehicles_df = (people_vehicles_df
             .withColumn("vehicles", explode("vehicles"))
@@ -34,9 +36,6 @@ display(people_vehicles_df)
 
 # COMMAND ----------
 
-#Extração do número da chamada da API para se tornar o ID
-#from pyspark.sql.functions import reverse, split, col
-
 people_vehicles_df = (people_vehicles_df
                 .withColumn("id_people_vehicles", monotonically_increasing_id() + 1)
                 .withColumn("id_people",reverse(split(reverse(col("url")),"/").getItem(1)))
@@ -44,8 +43,6 @@ people_vehicles_df = (people_vehicles_df
                 .select("id_people_vehicles", "id_people", "id_vehicles")
            )
 display(people_vehicles_df)
-
-
 
 # COMMAND ----------
 
@@ -55,7 +52,6 @@ people_vehicles_df = (
                     col("id_people_vehicles").cast('int'),
                     col("id_people").cast('int'),
                     col("id_vehicles").cast('int')
-                    
                 )
 )
 
@@ -70,7 +66,7 @@ display(people_vehicles_df)
 # COMMAND ----------
 
 #Definindo o diretório para salvar o arquivo parquet
-path_people_vehicles = '/FileStore/tables/swapi_dev/trusted/people_vehicles.parquet'
+path_people_vehicles = '/FileStore/tables/swapi_dev/trusted/relacional/people_vehicles.parquet'
 
 # COMMAND ----------
 

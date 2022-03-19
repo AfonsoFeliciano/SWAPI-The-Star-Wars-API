@@ -1,4 +1,8 @@
 # Databricks notebook source
+from pyspark.sql.functions import reverse, split, col, explode
+
+# COMMAND ----------
+
 path_starships_films_raw = "/FileStore/tables/swapi_dev/raw/starships.parquet"
 
 # COMMAND ----------
@@ -25,16 +29,11 @@ display(starships_films_df)
 
 # COMMAND ----------
 
-from pyspark.sql.functions import *
-
 starships_films_df = (starships_films_df
             .withColumn("id_films", explode("films"))
 )
 
 # COMMAND ----------
-
-#Extração do número da chamada da API para se tornar o ID do film
-from pyspark.sql.functions import reverse, split, col
 
 starships_films_df = (starships_films_df
                 .withColumn("id_starships",reverse(split(reverse(col("url")),"/").getItem(1)))
@@ -68,7 +67,7 @@ display(starships_films_df)
 # COMMAND ----------
 
 #Definindo o diretório para salvar o arquivo parquet
-path_starships_films = '/FileStore/tables/swapi_dev/trusted/starships_films.parquet'
+path_starships_films = '/FileStore/tables/swapi_dev/trusted/relacional/starships_films.parquet'
 
 # COMMAND ----------
 

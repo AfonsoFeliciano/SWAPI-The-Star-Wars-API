@@ -1,4 +1,9 @@
 # Databricks notebook source
+#Funções utilizadas no tratamento dos dados
+from pyspark.sql.functions import reverse, split, col
+
+# COMMAND ----------
+
 path_films_raw = "/FileStore/tables/swapi_dev/raw/films.parquet"
 
 # COMMAND ----------
@@ -33,16 +38,11 @@ display(films_df)
 
 # COMMAND ----------
 
-#Extração do número da chamada da API para se tornar o ID do film
-from pyspark.sql.functions import reverse, split, col
-
 films_df = (films_df
                 .withColumn("id_film",reverse(split(reverse(col("url")),"/").getItem(1)))
                 .select("id_film",  "episode_id", "title", "director", "producer", "opening_crawl", "release_date", "url", "created", "edited")
            )
 display(films_df)
-
-
 
 # COMMAND ----------
 
@@ -59,9 +59,7 @@ films_df = (
                     col("url").cast('string'), 
                     col("created").cast('timestamp'), 
                     col("edited").cast('timestamp')
-
                 )
-
 )
 
 # COMMAND ----------
@@ -75,7 +73,7 @@ display(films_df)
 # COMMAND ----------
 
 #Definindo o diretório para salvar o arquivo parquet
-path_films = '/FileStore/tables/swapi_dev/trusted/films.parquet'
+path_films = '/FileStore/tables/swapi_dev/trusted/relacional/films.parquet'
 
 # COMMAND ----------
 
@@ -84,5 +82,4 @@ path_films = '/FileStore/tables/swapi_dev/trusted/films.parquet'
      .option("compression", "snappy")
      .mode("overwrite")
      .parquet(path_films)
-)
-     
+) 

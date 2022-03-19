@@ -1,4 +1,8 @@
 # Databricks notebook source
+from pyspark.sql.functions import reverse, split, col, regexp_replace
+
+# COMMAND ----------
+
 path_planets_raw = "/FileStore/tables/swapi_dev/raw/planets.parquet"
 
 # COMMAND ----------
@@ -25,8 +29,7 @@ planets_df = (
                 planets_df.gravity,
                 planets_df.created,
                 planets_df.edited,
-                planets_df.url
-                
+                planets_df.url        
     )
 )
 
@@ -37,8 +40,6 @@ display(planets_df)
 # COMMAND ----------
 
 #Extração do número da chamada da API para se tornar o ID do film
-from pyspark.sql.functions import reverse, split, col
-
 planets_df = (planets_df
                 .withColumn("id_planet",reverse(split(reverse(col("url")),"/").getItem(1)))
                 .select(
@@ -54,17 +55,14 @@ planets_df = (planets_df
                     "gravity",
                     "url",
                     "created",
-                    "edited"
-                    
+                    "edited"     
                 )
            )
 display(planets_df)
 
 # COMMAND ----------
 
-from pyspark.sql.functions import regexp_replace
 planets_df = (
-    
             planets_df
                     .withColumn('orbital_period', regexp_replace('orbital_period', 'unknown', 'null'))
                     .withColumn('population', regexp_replace('population', 'unknown', 'null'))
@@ -96,7 +94,6 @@ planets_df = (
                     col("created").cast('timestamp'), 
                     col("edited").cast('timestamp')
                 )
-
 )
 
 # COMMAND ----------
@@ -110,7 +107,7 @@ display(planets_df)
 # COMMAND ----------
 
 #Definindo o diretório para salvar o arquivo parquet
-path_planets = '/FileStore/tables/swapi_dev/trusted/planets.parquet'
+path_planets = '/FileStore/tables/swapi_dev/trusted/relacional/planets.parquet'
 
 # COMMAND ----------
 
@@ -121,6 +118,3 @@ path_planets = '/FileStore/tables/swapi_dev/trusted/planets.parquet'
      .parquet(path_planets)
 )
      
-
-# COMMAND ----------
-
