@@ -15,6 +15,8 @@ display(people_df)
 people_df = (
         people_df.select( 
             people_df.name, 
+            people_df.species,
+            people_df.homeworld,
             people_df.gender,
             people_df.hair_color,
             people_df.eye_color,
@@ -33,13 +35,27 @@ display(people_df)
 
 # COMMAND ----------
 
+from pyspark.sql.functions import *
+
+people_df = (people_df
+            .withColumn("species", explode_outer("species"))
+)
+
+display(people_df)
+
+# COMMAND ----------
+
 #Extração do número da chamada da API para se tornar o ID do people
 from pyspark.sql.functions import reverse, split, col
 
 people_df = (people_df
                 .withColumn("id_people",reverse(split(reverse(col("url")),"/").getItem(1)))
+                .withColumn("id_species",reverse(split(reverse(col("species")),"/").getItem(1)))
+                .withColumn("id_planets",reverse(split(reverse(col("homeworld")),"/").getItem(1)))
                 .select(
                     "id_people", 
+                    "id_species",
+                    "id_planets",
                     "name", 
                     "gender",
                     "hair_color",
@@ -87,6 +103,8 @@ people_df = (
 people_df = (
                 people_df.select(
                     col("id_people").cast('int'), 
+                    col("id_species").cast('int'), 
+                    col("id_planets").cast('int'), 
                     col("name").cast('string'), 
                     col("gender").cast('string'),
                     col("hair_color").cast('string'),

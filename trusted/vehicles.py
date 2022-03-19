@@ -7,18 +7,6 @@ vehicles_df = spark.read.parquet(path_vehicles_raw)
 
 # COMMAND ----------
 
-#from pyspark.sql.functions import *
-
-#films_df = (films_df
-            #.withColumn("characters", explode("characters"))
-            #.withColumn("planets", explode("planets"))
-            #.withColumn("species", explode("species"))
-            #.withColumn("starships", explode("starships"))
-            #.withColumn("vehicles", explode("vehicles"))
-#)
-
-# COMMAND ----------
-
 display(vehicles_df)
 
 # COMMAND ----------
@@ -137,6 +125,3 @@ path_vehicles = '/FileStore/tables/swapi_dev/trusted/vehicles.parquet'
      .parquet(path_vehicles)
 )
      
-
-# COMMAND ----------
-

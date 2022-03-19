@@ -8,18 +8,6 @@ display(films_df)
 
 # COMMAND ----------
 
-#from pyspark.sql.functions import *
-
-#films_df = (films_df
-            #.withColumn("characters", explode("characters"))
-            #.withColumn("planets", explode("planets"))
-            #.withColumn("species", explode("species"))
-            #.withColumn("starships", explode("starships"))
-            #.withColumn("vehicles", explode("vehicles"))
-#)
-
-# COMMAND ----------
-
 display(films_df)
 
 # COMMAND ----------
